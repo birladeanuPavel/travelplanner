@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Travel Planner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"></script>
+</head>
+<body class="container-sm">
+<div th:replace="navbar :: navbar"></div>
+<h1 th:text="${newItinerary.name}"></h1>
+<div class="row">
+    <form th:action="@{/forecast}" th:object="${saveForecast}" method="post">
+        <label for="city">City</label>
+        <input type="text" th:field="*{city}" id="city" placeholder="City" required>
+        <label for="forecastDay">Forecast Day</label>
+        <select th:field="*{forecastDay}" id="forecastDay">
+            <option th:each="fd : ${forecastDays}" th:value="${fd}" th:text="${fd}">
+            </option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+<div class="row">
+    <table class="table table-borderless" th:each="forecast : ${newItinerary.forecasts}">
+        <thead>
+        <tr>
+            <th scope="col">City</th>
+            <th scope="col">Country Code</th>
+            <th scope="col">Temperature</th>
+            <th scope="col">Clouds</th>
+            <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="line : ${forecast.lines}">
+            <td th:text="${forecast.city}"></td>
+            <td th:text="${forecast.country}"></td>
+            <td th:text="${line.temp}"></td>
+            <td th:text="${line.clouds}"></td>
+            <td th:text="${line.date}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<div class="row">
+    <form th:action="@{/itinerary}" th:object="${saveItinerary}" method="post">
+        <label for="itineraryName">Itinerary Name</label>
+        <input type="text" id="itineraryName"  th:field="*{name}" placeholder="Itinerary name" required>
+        <input type="submit" value="Save itinerary">
+    </form>
+</div>
+<br>
+<div class="row">
+    <form th:action="@{/itinerary/reset}" method="post">
+        <input type="submit" value="Reset itinerary">
+    </form>
+</div>
+</body>
+</html>

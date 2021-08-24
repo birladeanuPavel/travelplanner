@@ -1,0 +1,10 @@
+feign:
+  client:
+    config:
+      forecastApi:
+        defaultQueryParameters:
+          units: metric
+spring:
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
